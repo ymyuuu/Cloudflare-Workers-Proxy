@@ -17,7 +17,7 @@
 4. 访问自定义域名，使用以下格式的 URL 进行请求：
    
    ```
-   https://your-workers-subdomain.your-account.workers.dev/https://target-domain.com
+   https://your-workers-subdomain/https://target-domain.com
    ```
    
    请确保将 "https://target-domain.com" 替换为你要代理的目标地址。
