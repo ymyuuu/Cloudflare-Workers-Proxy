@@ -22,7 +22,7 @@
 
 2. 创建 Workers 脚本：登录到 Cloudflare 账户后，进入 "Workers" 部分，创建一个新的 Workers 脚本。
 
-3. 复制粘贴[worker.js](worker.js)：将提供的反向代理脚本复制并粘贴到 Workers 编辑器中。
+3. 复制[worker.js](worker.js)：将提供的反向代理脚本粘贴到 Workers 编辑器中。
 
 4. 保存并部署：保存脚本后，点击 "Deploy" 按钮，以部署您的 Workers 脚本。
 
