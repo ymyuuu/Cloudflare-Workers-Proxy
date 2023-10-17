@@ -1,6 +1,7 @@
-addEventListener('fetch', event => {
-	event.respondWith(handleRequest(event.request));
-});
+addEventListener('fetch',
+	event => {
+		event.respondWith(handleRequest(event.request));
+	});
 
 async function handleRequest(request) {
 	const url = new URL(request.url);
@@ -13,129 +14,129 @@ async function handleRequest(request) {
 		const mainDomain = url.hostname;
 		const websiteTitle = "Anti proxy for Mingyu"; // 请替换为您的网站标题
 		const errorMessage = `
-    <html>
-    <head>
-      <title>${websiteTitle}</title>
-      <link rel="icon" type="image/gif" href="https://ymy.gay/https://cdn.jsdelivr.net/gh/png-dot/pngpng@main/20231017-110637-il2uvd.png">
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
-      <meta name="apple-mobile-web-app-capable" content="yes">
-      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          text-align: center;
-          background-color: #f0e6fa;
-          margin: 0;
-          padding: 0;
-        }
-
-        #container {
-          max-width: auto;
-          margin: 0 auto;
-          background-color: #fff;
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        input[type="text"] {
-          width: 100%;
-          padding: 8px;
-          border: 1px solid #ccc;
-          border-radius: 3px;
-          box-sizing: border-box;
-          display: block;
-          margin-top: 10px;
-          margin-bottom: 10px;
-        }
-
-        input[type="button"] {
-          background-color: #ff6b81;
-          color: #fff;
-          border: none;
-          padding: 10px 0;
-          border-radius: 5px;
-          cursor: pointer;
-          transition: background-color 0.1s ease;
-          width: 100%;
-        }
-
-        input[type="button"]:hover {
-          background-color: #2980b9;
-        }
-
-        @keyframes shake {
-          0% {
-            transform: translateX(0);
-          }
-
-          25% {
-            transform: translateX(-5px);
-          }
-
-          50% {
-            transform: translateX(5px);
-          }
-
-          75% {
-            transform: translateX(-5px);
-          }
-
-          100% {
-            transform: translateX(5px);
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <div id="container">
-        <h1>${websiteTitle}</h1>
-        <div class="form-group">
-          <label for="url">输入需要代理的网站:</label>
-          <input type="text" id="url" name="url" placeholder="例如：https://github.com/" />
-          <input type="button" id="submit" value="进入代理" onclick="redirectToProxy()" />
-        </div>
-		<p>&copy; 2023 <a href="https://git.ymy.gay/" target="_blank">Mingyu</a></p>
-      </div>
-      <script>
-        function redirectToProxy() {
-          var urlInput = document.getElementById('url');
-          var inputUrl = urlInput.value.trim(); // 移除前后空格
-          if (inputUrl) {
-            var url = normalizeUrl(inputUrl);
-            window.open('https://' + '${mainDomain}' + '/' + url, '_blank');
-            // 清空输入框内容
-            urlInput.value = '';
-          } else {
-            // 如果没有输入URL，执行抖动效果
-            urlInput.style.animation = 'shake 0.5s';
-            setTimeout(() => {
-              urlInput.style.animation = ''; // 清除抖动效果
-            }, 500);
-          }
-        }
-
-        function normalizeUrl(inputUrl) {
-          // 检查输入的URL是否以 "http://" 或 "https://" 开头
-          if (!inputUrl.startsWith("http://") && !inputUrl.startsWith("https://")) {
-            // 如果不是以 "http://" 或 "https://" 开头，则默认添加 "https://"
-            inputUrl = "https://" + inputUrl;
-          }
-          return inputUrl;
-        }
-
-        // 添加键盘事件监听器
-        document.addEventListener('keydown', function(event) {
-          if (event.key === 'Enter') {
-            // 如果按下回车键，触发提交按钮的点击事件
-            submit.click();
-          }
-        });
-      </script>
-    </body>
-    </html>
-    `;
+		<html>
+		    <head>
+		      <title>${websiteTitle}</title>
+		      <link rel="icon" type="image/gif" href="https://ymy.gay/https://cdn.jsdelivr.net/gh/png-dot/pngpng@main/20231017-110637-il2uvd.png">
+		      <meta charset="UTF-8">
+		      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+		      <meta name="apple-mobile-web-app-capable" content="yes">
+		      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		      <style>
+		        body {
+		          font-family: Arial, sans-serif;
+		          text-align: center;
+		          background-color: #f0e6fa;
+		          margin: 0;
+		          padding: 0;
+		        }
+		
+		        #container {
+		          max-width: auto;
+		          margin: 0 auto;
+		          background-color: #fff;
+		          padding: 20px;
+		          border-radius: 10px;
+		          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		        }
+		
+		        input[type="text"] {
+		          width: 100%;
+		          padding: 8px;
+		          border: 1px solid #ccc;
+		          border-radius: 3px;
+		          box-sizing: border-box;
+		          display: block;
+		          margin-top: 10px;
+		          margin-bottom: 10px;
+		        }
+		
+		        input[type="button"] {
+		          background-color: #ff6b81;
+		          color: #fff;
+		          border: none;
+		          padding: 10px 0;
+		          border-radius: 5px;
+		          cursor: pointer;
+		          transition: background-color 0.1s ease;
+		          width: 100%;
+		        }
+		
+		        input[type="button"]:hover {
+		          background-color: #2980b9;
+		        }
+		
+		        @keyframes shake {
+		          0% {
+		            transform: translateX(0);
+		          }
+		
+		          25% {
+		            transform: translateX(-5px);
+		          }
+		
+		          50% {
+		            transform: translateX(5px);
+		          }
+		
+		          75% {
+		            transform: translateX(-5px);
+		          }
+		
+		          100% {
+		            transform: translateX(5px);
+		          }
+		        }
+		      </style>
+		    </head>
+		    <body>
+		      <div id="container">
+		        <h1>${websiteTitle}</h1>
+		        <div class="form-group">
+		          <label for="url">输入需要代理的网站:</label>
+		          <input type="text" id="url" name="url" placeholder="例如：https://github.com/" />
+		          <input type="button" id="submit" value="进入代理" onclick="redirectToProxy()" />
+		        </div>
+		  <p>&copy; 2023 <a href="https://git.ymy.gay/" target="_blank">Mingyu</a></p>
+		      </div>
+		      <script>
+		        function redirectToProxy() {
+		          var urlInput = document.getElementById('url');
+		          var inputUrl = urlInput.value.trim(); // 移除前后空格
+		          if (inputUrl) {
+		            var url = normalizeUrl(inputUrl);
+		            window.open('https://' + '${mainDomain}' + '/' + url, '_blank');
+		            // 清空输入框内容
+		            urlInput.value = '';
+		          } else {
+		            // 如果没有输入URL，执行抖动效果
+		            urlInput.style.animation = 'shake 0.5s';
+		            setTimeout(() => {
+		              urlInput.style.animation = ''; // 清除抖动效果
+		            }, 500);
+		          }
+		        }
+		
+		        function normalizeUrl(inputUrl) {
+		          // 检查输入的URL是否以 "http://" 或 "https://" 开头
+		          if (!inputUrl.startsWith("http://") && !inputUrl.startsWith("https://")) {
+		            // 如果不是以 "http://" 或 "https://" 开头，则默认添加 "https://"
+		            inputUrl = "https://" + inputUrl;
+		          }
+		          return inputUrl;
+		        }
+		
+		        // 添加键盘事件监听器
+		        document.addEventListener('keydown', function(event) {
+		          if (event.key === 'Enter') {
+		            // 如果按下回车键，触发提交按钮的点击事件
+		            submit.click();
+		          }
+		        });
+		      </script>
+		    </body>
+		    </html>
+	  `;
 
 		return new Response(errorMessage, {
 			status: 400,
@@ -184,7 +185,6 @@ async function handleRequest(request) {
 				const regex = new RegExp('((href|src|action)=["\'])/(?!/)', 'g');
 				const modifiedText = originalText.replace(regex,
 					`$1${url.protocol}//${url.host}/${encodeURIComponent(new URL(actualUrlStr).origin + "/")}`);
-				// @ts-ignore
 				body = modifiedText;
 			}
 
