@@ -2,6 +2,9 @@
 
 这是一个基于 Cloudflare Workers 的简单反向代理脚本，用于将客户端的请求转发到目标地址，并将目标地址的响应返回给客户端。在使用本脚本之前，请务必详细阅读以下安全注意事项和免责声明，以确保使用脚本时的安全和法律合规性。
 
+<img width="736" alt="image" src="https://github.com/ymyuuu/Cloudflare-Workers-Proxy/assets/135582157/f8630df1-3853-42c1-966f-c35dd37ea99c">
+
+
 ## 简介
 
 这个 Cloudflare Workers 脚本充当了一个反向代理，它的主要功能是接收客户端的请求，并将请求代理到目标地址，然后将目标地址的响应返回给客户端。具体功能包括：
