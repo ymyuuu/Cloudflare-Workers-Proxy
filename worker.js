@@ -17,7 +17,7 @@ async function handleRequest(request) {
 		<html>
 		    <head>
 		      <title>${websiteTitle}</title>
-		      <link rel="icon" type="image/gif" href="https://ymy.gay/https://cdn.jsdelivr.net/gh/png-dot/pngpng@main/20231017-110637-il2uvd.png">
+		      <link rel="icon" type="image/gif" href="https://cdn.jsdelivr.net/gh/png-dot/pngpng@main/20231112-014821-y4poc8.jpg">
 		      <meta charset="UTF-8">
 		      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
 		      <meta name="apple-mobile-web-app-capable" content="yes">
@@ -97,7 +97,7 @@ async function handleRequest(request) {
 		          <input type="text" id="url" name="url" placeholder="例如：https://github.com/" />
 		          <input type="button" id="submit" value="进入代理" onclick="redirectToProxy()" />
 		        </div>
-		  <p>&copy; 2023 <a href="https://git.ymy.gay/" target="_blank">Mingyu</a></p>
+		  <p>&copy; 2023 <a href="https://ymyuuu.github.io/" target="_blank">Mingyu</a></p>
 		      </div>
 		      <script>
 		        function redirectToProxy() {
