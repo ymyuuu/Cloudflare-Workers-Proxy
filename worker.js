@@ -17,77 +17,103 @@ async function handleRequest(request) {
 		<html>
 		    <head>
 		      <title>${websiteTitle}</title>
-		      <link rel="icon" type="image/gif" href="https://cdn.jsdelivr.net/gh/png-dot/pngpng@main/20231112-014821-y4poc8.jpg">
-		      <meta charset="UTF-8">
+			  <link rel="icon" type="image/jpg"
+			href="https://cdn.jsdelivr.net/gh/png-dot/pngpng@main/20231112-014821-y4poc8.jpg">
+			  <meta charset="UTF-8">
 		      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
 		      <meta name="apple-mobile-web-app-capable" content="yes">
 		      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 		      <style>
-		        body {
-		          font-family: Arial, sans-serif;
-		          text-align: center;
-		          background-color: #f0e6fa;
-		          margin: 0;
-		          padding: 0;
-		        }
-		
-		        #container {
-		          max-width: auto;
-		          margin: 0 auto;
-		          background-color: #fff;
-		          padding: 20px;
-		          border-radius: 10px;
-		          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		        }
-		
-		        input[type="text"] {
-		          width: 100%;
-		          padding: 8px;
-		          border: 1px solid #ccc;
-		          border-radius: 3px;
-		          box-sizing: border-box;
-		          display: block;
-		          margin-top: 10px;
-		          margin-bottom: 10px;
-		        }
-		
-		        input[type="button"] {
-		          background-color: #ff6b81;
-		          color: #fff;
-		          border: none;
-		          padding: 10px 0;
-		          border-radius: 5px;
-		          cursor: pointer;
-		          transition: background-color 0.1s ease;
-		          width: 100%;
-		        }
-		
-		        input[type="button"]:hover {
-		          background-color: #2980b9;
-		        }
-		
-		        @keyframes shake {
-		          0% {
-		            transform: translateX(0);
-		          }
-		
-		          25% {
-		            transform: translateX(-5px);
-		          }
-		
-		          50% {
-		            transform: translateX(5px);
-		          }
-		
-		          75% {
-		            transform: translateX(-5px);
-		          }
-		
-		          100% {
-		            transform: translateX(5px);
-		          }
-		        }
-		      </style>
+			body {
+				font-family: Arial, sans-serif;
+				text-align: center;
+				background-color: #f0e6fa;
+				margin: 0;
+				padding: 0;
+			}
+
+			#container {
+				max-width: auto;
+				margin: 0 auto;
+				background-color: #fff;
+				padding: 20px;
+				border-radius: 10px;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			}
+
+			input[type="text"] {
+				width: 100%;
+				padding: 8px;
+				border: 1px solid #ccc;
+				border-radius: 3px;
+				box-sizing: border-box;
+				display: block;
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
+
+			input[type="button"] {
+				background-color: #ff6b81;
+				color: #fff;
+				border: none;
+				padding: 10px 0;
+				border-radius: 5px;
+				cursor: pointer;
+				transition: background-color 0.1s ease;
+				width: 100%;
+			}
+
+			input[type="button"]:hover {
+				background-color: #2980b9;
+			}
+
+			@keyframes shake {
+				0% {
+					transform: translateX(0);
+				}
+
+				25% {
+					transform: translateX(-5px);
+				}
+
+				50% {
+					transform: translateX(5px);
+				}
+
+				75% {
+					transform: translateX(-5px);
+				}
+
+				100% {
+					transform: translateX(5px);
+				}
+			}
+
+			@media (min-width: 768px) {
+				body {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					height: 100vh;
+					/* 设置body的高度为视口高度，使其垂直方向上居中 */
+				}
+
+				#container {
+					width: 100%;
+				}
+			}
+
+			/* 暗黑模式 */
+			@media (prefers-color-scheme: dark) {
+				body {
+					background-color: #333;
+				}
+
+				#container {
+					background-color: #CDC1C5;
+				}
+			}
+		</style>
 		    </head>
 		    <body>
 		      <div id="container">
@@ -97,7 +123,7 @@ async function handleRequest(request) {
 		          <input type="text" id="url" name="url" placeholder="例如：https://github.com/" />
 		          <input type="button" id="submit" value="进入代理" onclick="redirectToProxy()" />
 		        </div>
-		  <p>&copy; 2023 <a href="https://ymyuuu.github.io/" target="_blank">Mingyu</a></p>
+		  <p>&copy; 2023 <a href="https://github.com/ymyuuu/" target="_blank">Mingyu</a></p>
 		      </div>
 		      <script>
 		        function redirectToProxy() {
