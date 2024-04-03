@@ -225,6 +225,9 @@ async function handleRequest(request) {
 		modifiedResponse.headers.set('Access-Control-Allow-Origin', '*');
 		modifiedResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
 		modifiedResponse.headers.set('Access-Control-Allow-Headers', '*');
+    		modifiedResponse.headers.delete("X-Frame-Options");
+    		modifiedResponse.headers.delete("Content-Security-Policy");
+    
 
 		return modifiedResponse;
 	} catch (error) {
