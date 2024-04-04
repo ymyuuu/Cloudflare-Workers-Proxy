@@ -214,6 +214,16 @@ async function handleRequest(request) {
 				body = modifiedText;
 			}
 
+			if (response.headers.get("Content-Type") && response.headers.get("Content-Type").includes(
+					"text/css")) {
+				// 将相对路径替换为绝对路径
+				const originalText = await response.text();
+				const regex = new RegExp('(url\\()/', 'g'); // 为什么(?!/)排除两个斜杠，没懂
+				const modifiedText = originalText.replace(regex,
+					`$1${url.protocol}//${url.host}/${encodeURIComponent(new URL(actualUrlStr).origin + "/")}`);
+				body = modifiedText;
+			}
+
 			modifiedResponse = new Response(body, {
 				status: response.status,
 				statusText: response.statusText,
@@ -225,8 +235,8 @@ async function handleRequest(request) {
 		modifiedResponse.headers.set('Access-Control-Allow-Origin', '*');
 		modifiedResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
 		modifiedResponse.headers.set('Access-Control-Allow-Headers', '*');
-    		modifiedResponse.headers.delete("X-Frame-Options");
-    		modifiedResponse.headers.delete("Content-Security-Policy");
+		modifiedResponse.headers.delete("X-Frame-Options");
+		modifiedResponse.headers.delete("Content-Security-Policy");
     
 
 		return modifiedResponse;
