@@ -7,7 +7,7 @@ async function handleRequest(request) {
 	const url = new URL(request.url);
 
 	// 从请求路径中提取目标 URL
-	let actualUrlStr = url.pathname.replace("/", "");
+	let actualUrlStr = url.pathname.replace("/", "") + url.search + url.hash;
 	actualUrlStr = decodeURIComponent(actualUrlStr);
 
 	if (!actualUrlStr) {
