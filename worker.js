@@ -4,6 +4,16 @@ addEventListener('fetch',
 	});
 
 async function handleRequest(request) {
+	// 要添加的 JavaScript 代码
+	const scriptToAdd = `
+	<script>
+	setTimeout(() => {
+	// 一些js代码
+	}, 3000);
+	</script>
+	`;
+
+
 	const url = new URL(request.url);
 
 	// 从请求路径中提取目标 URL
@@ -209,8 +219,9 @@ async function handleRequest(request) {
 				// 如果响应类型是 HTML，则修改响应内容，将相对路径替换为绝对路径
 				const originalText = await response.text();
 				const regex = new RegExp('((href|src|action)=["\'])/(?!/)', 'g');
-				const modifiedText = originalText.replace(regex,
+				let modifiedText = originalText.replace(regex,
 					`$1${url.protocol}//${url.host}/${encodeURIComponent(new URL(actualUrlStr).origin + "/")}`);
+				modifiedText += scriptToAdd;
 				body = modifiedText;
 			}
 
