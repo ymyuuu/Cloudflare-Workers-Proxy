@@ -4,6 +4,16 @@ addEventListener('fetch',
 	});
 
 async function handleRequest(request) {
+	// 要添加的 JavaScript 代码
+	const scriptToAdd = `
+	<script>
+	setTimeout(() => {
+	// 一些js代码
+	}, 3000);
+	</script>
+	`;
+
+
 	const url = new URL(request.url);
 
 	// 从请求路径中提取目标 URL
@@ -209,6 +219,17 @@ async function handleRequest(request) {
 				// 如果响应类型是 HTML，则修改响应内容，将相对路径替换为绝对路径
 				const originalText = await response.text();
 				const regex = new RegExp('((href|src|action)=["\'])/(?!/)', 'g');
+				let modifiedText = originalText.replace(regex,
+					`$1${url.protocol}//${url.host}/${encodeURIComponent(new URL(actualUrlStr).origin + "/")}`);
+				modifiedText += scriptToAdd;
+				body = modifiedText;
+			}
+
+			if (response.headers.get("Content-Type") && response.headers.get("Content-Type").includes(
+					"text/css")) {
+				// 将相对路径替换为绝对路径
+				const originalText = await response.text();
+				const regex = new RegExp('(url\\()/', 'g'); // 为什么(?!/)排除两个斜杠，没懂
 				const modifiedText = originalText.replace(regex,
 					`$1${url.protocol}//${url.host}/${encodeURIComponent(new URL(actualUrlStr).origin + "/")}`);
 				body = modifiedText;
@@ -225,6 +246,9 @@ async function handleRequest(request) {
 		modifiedResponse.headers.set('Access-Control-Allow-Origin', '*');
 		modifiedResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
 		modifiedResponse.headers.set('Access-Control-Allow-Headers', '*');
+		modifiedResponse.headers.delete("X-Frame-Options");
+		modifiedResponse.headers.delete("Content-Security-Policy");
+    
 
 		return modifiedResponse;
 	} catch (error) {
