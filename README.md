@@ -2,13 +2,10 @@
 
 这是一个基于 Cloudflare Workers 的简单反向代理脚本，用于将客户端的请求转发到目标地址，并将目标地址的响应返回给客户端。在使用本脚本之前，请务必详细阅读以下安全注意事项和免责声明，以确保使用脚本时的安全和法律合规性。
 
-## 交流群和通知频道
+- 群聊: [HeroCore](https://t.me/HeroCore)
+- 频道: [HeroMsg](https://t.me/HeroMsg)
 
-欢迎加入我们的交流群 [Preferred IP Push Chat](https://t.me/Preferred_IP_Push_Chat)
-
-同时，你可以关注我们的通知频道 [Preferred IP Push](https://t.me/Preferred_IP_Push)
-
-<img width="736" alt="image" src="https://github.com/ymyuuu/Cloudflare-Workers-Proxy/assets/135582157/f8630df1-3853-42c1-966f-c35dd37ea99c">
+![image](https://github.com/user-attachments/assets/72b35862-16cc-4224-89e1-ad0419a7ac4e)
 
 
 ## 简介
