@@ -1,236 +1,220 @@
-addEventListener('fetch',
-	event => {
-		event.respondWith(handleRequest(event.request));
-	});
+addEventListener('fetch', event => {
+  event.respondWith(handleRequest(event.request));
+});
 
 async function handleRequest(request) {
-	const url = new URL(request.url);
+  try {
+      const url = new URL(request.url);
 
-	// 从请求路径中提取目标 URL
-	let actualUrlStr = url.pathname.replace("/", "");
-	actualUrlStr = decodeURIComponent(actualUrlStr);
+      // 如果访问根目录，返回HTML
+      if (url.pathname === "/") {
+          return new Response(getRootHtml(), {
+              headers: {
+                  'Content-Type': 'text/html; charset=utf-8'
+              }
+          });
+      }
 
-	if (!actualUrlStr) {
-		const mainDomain = url.hostname;
-		const websiteTitle = "Anti proxy for Mingyu"; // 请替换为您的网站标题
-		const errorMessage = `
-		<html>
-		    <head>
-		      <title>${websiteTitle}</title>
-			  <link rel="icon" type="image/jpg"
-			href="https://cdn.jsdelivr.net/gh/png-dot/pngpng@main/20231112-014821-y4poc8.jpg">
-			  <meta charset="UTF-8">
-		      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
-		      <meta name="apple-mobile-web-app-capable" content="yes">
-		      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-		      <style>
-			body {
-				font-family: Arial, sans-serif;
-				text-align: center;
-				background-color: #f0e6fa;
-				margin: 0;
-				padding: 0;
-			}
+      // 从请求路径中提取目标 URL
+      let actualUrlStr = decodeURIComponent(url.pathname.replace("/", ""));
 
-			#container {
-				max-width: auto;
-				margin: 0 auto;
-				background-color: #fff;
-				padding: 20px;
-				border-radius: 10px;
-				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-			}
+      // 判断用户输入的 URL 是否带有协议
+      actualUrlStr = ensureProtocol(actualUrlStr, url.protocol);
 
-			input[type="text"] {
-				width: 100%;
-				padding: 8px;
-				border: 1px solid #ccc;
-				border-radius: 3px;
-				box-sizing: border-box;
-				display: block;
-				margin-top: 10px;
-				margin-bottom: 10px;
-			}
+      // 保留查询参数
+      actualUrlStr += url.search;
 
-			input[type="button"] {
-				background-color: #ff6b81;
-				color: #fff;
-				border: none;
-				padding: 10px 0;
-				border-radius: 5px;
-				cursor: pointer;
-				transition: background-color 0.1s ease;
-				width: 100%;
-			}
+      // 创建新 Headers 对象，排除以 'cf-' 开头的请求头
+      const newHeaders = filterHeaders(request.headers, name => !name.startsWith('cf-'));
 
-			input[type="button"]:hover {
-				background-color: #2980b9;
-			}
+      // 创建一个新的请求以访问目标 URL
+      const modifiedRequest = new Request(actualUrlStr, {
+          headers: newHeaders,
+          method: request.method,
+          body: request.body,
+          redirect: 'manual'
+      });
 
-			@keyframes shake {
-				0% {
-					transform: translateX(0);
-				}
+      // 发起对目标 URL 的请求
+      const response = await fetch(modifiedRequest);
+      let body = response.body;
 
-				25% {
-					transform: translateX(-5px);
-				}
+      // 处理重定向
+      if ([301, 302, 303, 307, 308].includes(response.status)) {
+          body = response.body;
+          // 创建新的 Response 对象以修改 Location 头部
+          return handleRedirect(response, body);
+      } else if (response.headers.get("Content-Type")?.includes("text/html")) {
+          body = await handleHtmlContent(response, url.protocol, url.host, actualUrlStr);
+      }
 
-				50% {
-					transform: translateX(5px);
-				}
+      // 创建修改后的响应对象
+      const modifiedResponse = new Response(body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers: response.headers
+      });
 
-				75% {
-					transform: translateX(-5px);
-				}
+      // 添加禁用缓存的头部
+      setNoCacheHeaders(modifiedResponse.headers);
 
-				100% {
-					transform: translateX(5px);
-				}
-			}
+      // 添加 CORS 头部，允许跨域访问
+      setCorsHeaders(modifiedResponse.headers);
 
-			@media (min-width: 768px) {
-				body {
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					height: 100vh;
-					/* 设置body的高度为视口高度，使其垂直方向上居中 */
-				}
+      return modifiedResponse;
+  } catch (error) {
+      // 如果请求目标地址时出现错误，返回带有错误消息的响应和状态码 500（服务器错误）
+      return jsonResponse({
+          error: error.message
+      }, 500);
+  }
+}
 
-				#container {
-					width: 100%;
-				}
-			}
+// 确保 URL 带有协议
+function ensureProtocol(url, defaultProtocol) {
+  return url.startsWith("http://") || url.startsWith("https://") ? url : defaultProtocol + "//" + url;
+}
 
-			/* 暗黑模式 */
-			@media (prefers-color-scheme: dark) {
-				body {
-					background-color: #333;
-				}
+// 处理重定向
+function handleRedirect(response, body) {
+  const location = new URL(response.headers.get('location'));
+  const modifiedLocation = `/${encodeURIComponent(location.toString())}`;
+  return new Response(body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: {
+          ...response.headers,
+          'Location': modifiedLocation
+      }
+  });
+}
 
-				#container {
-					background-color: #CDC1C5;
-				}
-			}
-		</style>
-		    </head>
-		    <body>
-		      <div id="container">
-		        <h1>${websiteTitle}</h1>
-		        <div class="form-group">
-		          <label for="url">输入需要代理的网站:</label>
-		          <input type="text" id="url" name="url" placeholder="例如：https://github.com/" />
-		          <input type="button" id="submit" value="进入代理" onclick="redirectToProxy()" />
-		        </div>
-		  <p>&copy; 2023 <a href="https://github.com/ymyuuu/" target="_blank">Mingyu</a></p>
-		      </div>
-		      <script>
-		        function redirectToProxy() {
-		          var urlInput = document.getElementById('url');
-		          var inputUrl = urlInput.value.trim(); // 移除前后空格
-		          if (inputUrl) {
-		            var url = normalizeUrl(inputUrl);
-		            window.open('https://' + '${mainDomain}' + '/' + url, '_blank');
-		            // 清空输入框内容
-		            urlInput.value = '';
-		          } else {
-		            // 如果没有输入URL，执行抖动效果
-		            urlInput.style.animation = 'shake 0.5s';
-		            setTimeout(() => {
-		              urlInput.style.animation = ''; // 清除抖动效果
-		            }, 500);
-		          }
-		        }
-		
-		        function normalizeUrl(inputUrl) {
-		          // 检查输入的URL是否以 "http://" 或 "https://" 开头
-		          if (!inputUrl.startsWith("http://") && !inputUrl.startsWith("https://")) {
-		            // 如果不是以 "http://" 或 "https://" 开头，则默认添加 "https://"
-		            inputUrl = "https://" + inputUrl;
-		          }
-		          return inputUrl;
-		        }
-		
-		        // 添加键盘事件监听器
-		        document.addEventListener('keydown', function(event) {
-		          if (event.key === 'Enter') {
-		            // 如果按下回车键，触发提交按钮的点击事件
-		            submit.click();
-		          }
-		        });
-		      </script>
-		    </body>
-		    </html>
-	  `;
+// 处理 HTML 内容中的相对路径
+async function handleHtmlContent(response, protocol, host, actualUrlStr) {
+  const originalText = await response.text();
+  const regex = new RegExp('((href|src|action)=["\'])/(?!/)', 'g');
+  let modifiedText = replaceRelativePaths(originalText, protocol, host, new URL(actualUrlStr).origin);
 
-		return new Response(errorMessage, {
-			status: 400,
-			headers: {
-				'Content-Type': 'text/html; charset=utf-8'
-			}
-		});
-	}
+  return modifiedText;
+}
 
-	// 创建新 Headers 对象，排除以 'cf-' 开头的请求头
-	let newHeaders = new Headers();
-	for (let pair of request.headers.entries()) {
-		if (!pair[0].startsWith('cf-')) {
-			newHeaders.append(pair[0], pair[1]);
-		}
-	}
+// 替换 HTML 内容中的相对路径
+function replaceRelativePaths(text, protocol, host, origin) {
+  const regex = new RegExp('((href|src|action)=["\'])/(?!/)', 'g');
+  return text.replace(regex, `$1${protocol}//${host}/${origin}/`);
+}
 
-	// 创建一个新的请求以访问目标 URL
-	const modifiedRequest = new Request(actualUrlStr, {
-		headers: newHeaders,
-		method: request.method,
-		body: request.body,
-		redirect: 'manual'
-	});
+// 返回 JSON 格式的响应
+function jsonResponse(data, status) {
+  return new Response(JSON.stringify(data), {
+      status: status,
+      headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+      }
+  });
+}
 
-	try {
-		// 发起对目标 URL 的请求
-		const response = await fetch(modifiedRequest);
-		let modifiedResponse;
-		let body = response.body;
+// 过滤请求头
+function filterHeaders(headers, filterFunc) {
+  return new Headers([...headers].filter(([name]) => filterFunc(name)));
+}
 
-		// 处理重定向
-		if ([301, 302, 303, 307, 308].includes(response.status)) {
-			const location = new URL(response.headers.get('location'));
-			const modifiedLocation = "/" + encodeURIComponent(location.toString());
-			modifiedResponse = new Response(response.body, {
-				status: response.status,
-				statusText: response.statusText
-			});
-			modifiedResponse.headers.set('Location', modifiedLocation);
-		} else {
-			if (response.headers.get("Content-Type") && response.headers.get("Content-Type").includes(
-					"text/html")) {
-				// 如果响应类型是 HTML，则修改响应内容，将相对路径替换为绝对路径
-				const originalText = await response.text();
-				const regex = new RegExp('((href|src|action)=["\'])/(?!/)', 'g');
-				const modifiedText = originalText.replace(regex,
-					`$1${url.protocol}//${url.host}/${encodeURIComponent(new URL(actualUrlStr).origin + "/")}`);
-				body = modifiedText;
-			}
+// 设置禁用缓存的头部
+function setNoCacheHeaders(headers) {
+  headers.set('Cache-Control', 'no-store');
+}
 
-			modifiedResponse = new Response(body, {
-				status: response.status,
-				statusText: response.statusText,
-				headers: response.headers
-			});
-		}
+// 设置 CORS 头部
+function setCorsHeaders(headers) {
+  headers.set('Access-Control-Allow-Origin', '*');
+  headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  headers.set('Access-Control-Allow-Headers', '*');
+}
 
-		// 添加 CORS 头部，允许跨域访问
-		modifiedResponse.headers.set('Access-Control-Allow-Origin', '*');
-		modifiedResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-		modifiedResponse.headers.set('Access-Control-Allow-Headers', '*');
-
-		return modifiedResponse;
-	} catch (error) {
-		// 如果请求目标地址时出现错误，返回带有错误消息的响应和状态码 500（服务器错误）
-		return new Response('无法访问目标地址: ' + error.message, {
-			status: 500
-		});
-	}
+// 返回根目录的 HTML
+function getRootHtml() {
+  return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <title>Proxy Everything</title>
+  <link rel="icon" type="image/png" href="https://img.icons8.com/color/1000/kawaii-bread-1.png">
+  <meta name="Description" content="Proxy Everything with CF Workers.">
+  <meta property="og:description" content="Proxy Everything with CF Workers.">
+  <meta property="og:image" content="https://img.icons8.com/color/1000/kawaii-bread-1.png">
+  <meta name="robots" content="index, follow">
+  <meta http-equiv="Content-Language" content="zh-CN">
+  <meta name="copyright" content="Copyright © ymyuuu">
+  <meta name="author" content="ymyuuu">
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://img.icons8.com/color/1000/kawaii-bread-1.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <style>
+      body, html {
+          height: 100%;
+          margin: 0;
+      }
+      .background {
+          background-image: url('https://imgapi.cn/bing.php');
+          background-size: cover;
+          background-position: center;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+      .card {
+          background-color: rgba(255, 255, 255, 0.8);
+          transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      .card:hover {
+          background-color: rgba(255, 255, 255, 1);
+          box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+      }
+      .input-field input[type=text] {
+          color: #2c3e50;
+      }
+      .input-field input[type=text]:focus+label {
+          color: #2c3e50 !important;
+      }
+      .input-field input[type=text]:focus {
+          border-bottom: 1px solid #2c3e50 !important;
+          box-shadow: 0 1px 0 0 #2c3e50 !important;
+      }
+  </style>
+</head>
+<body>
+  <div class="background">
+      <div class="container">
+          <div class="row">
+              <div class="col s12 m8 offset-m2 l6 offset-l3">
+                  <div class="card">
+                      <div class="card-content">
+                          <span class="card-title center-align"><i class="material-icons left">link</i>Proxy Everything</span>
+                          <form id="urlForm" onsubmit="redirectToProxy(event)">
+                              <div class="input-field">
+                                  <input type="text" id="targetUrl" placeholder="在此输入目标地址" required>
+                                  <label for="targetUrl">目标地址</label>
+                              </div>
+                              <button type="submit" class="btn waves-effect waves-light teal darken-2 full-width">跳转</button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+      function redirectToProxy(event) {
+          event.preventDefault();
+          const targetUrl = document.getElementById('targetUrl').value.trim();
+          const currentOrigin = window.location.origin;
+          window.open(currentOrigin + '/' + encodeURIComponent(targetUrl), '_blank');
+      }
+  </script>
+</body>
+</html>`;
 }
