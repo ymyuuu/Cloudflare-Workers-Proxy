@@ -5,7 +5,7 @@
 - 群聊: [HeroCore](https://t.me/HeroCore)
 - 频道: [HeroMsg](https://t.me/HeroMsg)
 
-![image](https://github.com/user-attachments/assets/72b35862-16cc-4224-89e1-ad0419a7ac4e)
+[![Powered by DartNode](https://dartnode.com/branding/DN-Open-Source-sm.png)](https://dartnode.com "Powered by DartNode - Free VPS for Open Source")
 
 
 ## 简介
