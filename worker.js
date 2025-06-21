@@ -1,13 +1,27 @@
+const uri = "/";
+
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request));
 });
+
+function validate(path) {
+  if (path.startsWith(uri)) {
+      return true;
+  } else {
+      return false;
+  }
+}
 
 async function handleRequest(request) {
   try {
       const url = new URL(request.url);
 
-      // 如果访问根目录，返回HTML
-      if (url.pathname === "/") {
+      if (!validate(url.pathname)) {
+          return new Response('Unauthorized', { status: 403 });
+      }
+
+      // 如果访问完整URL，返回HTML
+      if (url.pathname == uri) {
           return new Response(getRootHtml(), {
               headers: {
                   'Content-Type': 'text/html; charset=utf-8'
@@ -16,7 +30,7 @@ async function handleRequest(request) {
       }
 
       // 从请求路径中提取目标 URL
-      let actualUrlStr = decodeURIComponent(url.pathname.replace("/", ""));
+      let actualUrlStr = decodeURIComponent(url.pathname.substring(uri.length));
 
       // 判断用户输入的 URL 是否带有协议
       actualUrlStr = ensureProtocol(actualUrlStr, url.protocol);
