@@ -92,7 +92,7 @@ function ensureProtocol(url, defaultProtocol) {
 // 处理重定向
 function handleRedirect(response, body) {
   const location = new URL(response.headers.get('location'));
-  const modifiedLocation = `/${encodeURIComponent(location.toString())}`;
+  const modifiedLocation = `${uri}${encodeURIComponent(location.toString())}`;
   return new Response(body, {
       status: response.status,
       statusText: response.statusText,
@@ -115,7 +115,7 @@ async function handleHtmlContent(response, protocol, host, actualUrlStr) {
 // 替换 HTML 内容中的相对路径
 function replaceRelativePaths(text, protocol, host, origin) {
   const regex = new RegExp('((href|src|action)=["\'])/(?!/)', 'g');
-  return text.replace(regex, `$1${protocol}//${host}/${origin}/`);
+  return text.replace(regex, `$1${protocol}//${host}${uri}${origin}/`);
 }
 
 // 返回 JSON 格式的响应
@@ -226,7 +226,7 @@ function getRootHtml() {
           event.preventDefault();
           const targetUrl = document.getElementById('targetUrl').value.trim();
           const currentOrigin = window.location.origin;
-          window.open(currentOrigin + '/' + encodeURIComponent(targetUrl), '_blank');
+          window.open(currentOrigin + '${uri}' + encodeURIComponent(targetUrl), '_blank');
       }
   </script>
 </body>
