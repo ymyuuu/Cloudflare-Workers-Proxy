@@ -137,17 +137,17 @@ function getRootHtml() {
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <link href="https://s4.zstatic.net/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
   <title>Proxy Everything</title>
-  <link rel="icon" type="image/png" href="https://img.icons8.com/color/1000/kawaii-bread-1.png">
+  <link rel="icon" type="image/png" href="https://s2.hdslb.com/bfs/openplatform/1682b11880f5c53171217a03c8adc9f2e2a27fcf.png@100w.webp">
   <meta name="Description" content="Proxy Everything with CF Workers.">
   <meta property="og:description" content="Proxy Everything with CF Workers.">
-  <meta property="og:image" content="https://img.icons8.com/color/1000/kawaii-bread-1.png">
+  <meta property="og:image" content="https://s2.hdslb.com/bfs/openplatform/1682b11880f5c53171217a03c8adc9f2e2a27fcf.png@100w.webp">
   <meta name="robots" content="index, follow">
   <meta http-equiv="Content-Language" content="zh-CN">
   <meta name="copyright" content="Copyright © ymyuuu">
   <meta name="author" content="ymyuuu">
-  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://img.icons8.com/color/1000/kawaii-bread-1.png">
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://s2.hdslb.com/bfs/openplatform/1682b11880f5c53171217a03c8adc9f2e2a27fcf.png@100w.webp">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
@@ -157,7 +157,6 @@ function getRootHtml() {
           margin: 0;
       }
       .background {
-          background-image: url('https://imgapi.cn/bing.php');
           background-size: cover;
           background-position: center;
           height: 100%;
@@ -183,6 +182,33 @@ function getRootHtml() {
           border-bottom: 1px solid #2c3e50 !important;
           box-shadow: 0 1px 0 0 #2c3e50 !important;
       }
+      @media (prefers-color-scheme: dark) {
+          body, html {
+              background-color: #121212;
+              color: #e0e0e0;
+          }
+          .card {
+              background-color: rgba(33, 33, 33, 0.9);
+              color: #ffffff;
+          }
+          .card:hover {
+              background-color: rgba(50, 50, 50, 1);
+              box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.6);
+          }
+          .input-field input[type=text] {
+              color: #ffffff;
+          }
+          .input-field input[type=text]:focus+label {
+              color: #ffffff !important;
+          }
+          .input-field input[type=text]:focus {
+              border-bottom: 1px solid #ffffff !important;
+              box-shadow: 0 1px 0 0 #ffffff !important;
+          }
+          label {
+              color: #cccccc;
+          }
+      }
   </style>
 </head>
 <body>
@@ -206,7 +232,7 @@ function getRootHtml() {
           </div>
       </div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://s4.zstatic.net/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script>
       function redirectToProxy(event) {
           event.preventDefault();
